@@ -1,4 +1,4 @@
-
+/// <reference lib="dom" />
 import React from 'react';
 import { useStore } from '../store';
 import { Sliders, Shield, Zap, Cpu } from 'lucide-react';

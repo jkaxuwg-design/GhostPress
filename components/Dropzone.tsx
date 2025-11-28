@@ -1,4 +1,4 @@
-
+/// <reference lib="dom" />
 import React, { useRef, useState } from 'react';
 import { Upload, ScanLine } from 'lucide-react';
 import { useStore } from '../store';

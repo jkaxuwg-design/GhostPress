@@ -1,3 +1,4 @@
+/// <reference lib="dom" />
 interface CompressionOptions {
   quality: number; // 0 to 1
   scale: number; // 0 to 1

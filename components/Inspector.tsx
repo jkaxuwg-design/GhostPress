@@ -1,4 +1,4 @@
-
+/// <reference lib="dom" />
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store';
 import { ArrowLeftRight, Download, Trash2, CheckCircle } from 'lucide-react';

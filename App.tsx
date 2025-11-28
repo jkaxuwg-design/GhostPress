@@ -1,4 +1,3 @@
-
 import React, { useEffect, useCallback } from 'react';
 import { useStore } from './store';
 import { AppStatus, FileType } from './types';
@@ -7,7 +6,7 @@ import { ControlDeck } from './components/ControlDeck';
 import { GhostHUD } from './components/GhostHUD';
 import { Inspector } from './components/Inspector';
 import { compressImage } from './services/imageProcessor';
-import { processVideoMock } from './services/videoProcessor';
+import { processVideo } from './services/videoProcessor';
 import { GlassCard } from './components/ui/GlassCard';
 import { Zap, AlertTriangle, Globe } from 'lucide-react';
 import { translations } from './i18n';
@@ -39,8 +38,12 @@ const App: React.FC = () => {
         
         state.setProgress(100);
       } else {
-        // Video Processing (Mocked)
-        resultBlob = await processVideoMock(state.file, (p) => state.setProgress(p));
+        // Video Processing (Real FFmpeg with Fallback)
+        resultBlob = await processVideo(
+            state.file, 
+            { quality: state.quality / 100 }, 
+            (p) => state.setProgress(p)
+        );
       }
 
       const url = URL.createObjectURL(resultBlob);
@@ -89,7 +92,7 @@ const App: React.FC = () => {
            </button>
 
            <div className="hidden md:flex items-center space-x-4">
-             <span>V1.0.4_STABLE</span>
+             <span>V1.0.5_VID_ENABLED</span>
              <div className="flex items-center space-x-1">
                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                <span>{t.system_online}</span>
