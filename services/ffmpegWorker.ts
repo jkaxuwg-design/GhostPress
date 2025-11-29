@@ -14,11 +14,12 @@ self.onmessage = async (e: MessageEvent<WorkerMessage>) => {
 
   try {
     if (!ffmpeg.loaded) {
-      // Load FFmpeg core from public directory
-      // We use relative paths assuming they are served from /ffmpeg-core/
+      // Load FFmpeg core from CDN (unpkg)
+      // This avoids the need to manually place ffmpeg-core files in the public directory
+      const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
       await ffmpeg.load({
-        coreURL: '/ffmpeg-core/ffmpeg-core.js',
-        wasmURL: '/ffmpeg-core/ffmpeg-core.wasm',
+        coreURL: `${baseURL}/ffmpeg-core.js`,
+        wasmURL: `${baseURL}/ffmpeg-core.wasm`,
       });
     }
 
@@ -36,12 +37,14 @@ self.onmessage = async (e: MessageEvent<WorkerMessage>) => {
 
     // Execute compression
     // -preset ultrafast: sacrifices some compression ratio for speed, critical for browser
+    // -movflags +faststart: optimizes video for web playback
     await ffmpeg.exec([
       '-i', inputName,
       '-c:v', 'libx264',
       '-crf', crf.toString(),
       '-preset', 'ultrafast',
       '-c:a', 'copy', // Copy audio to save processing time
+      '-movflags', '+faststart',
       outputName
     ]);
 
